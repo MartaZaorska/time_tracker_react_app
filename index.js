@@ -6,6 +6,7 @@ const graphqlHttp = require("express-graphql");
 const connectDatabase = require("./config/connectDB");
 const rootValue = require("./resolvers/index");
 const schema = require("./schema/index");
+const auth = require("./middleware/auth");
 
 connectDatabase();
 
@@ -13,6 +14,8 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+
+app.use(auth());
 
 app.use(
   "/graphql",
