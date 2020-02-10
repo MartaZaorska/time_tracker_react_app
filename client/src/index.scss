@@ -1,0 +1,46 @@
+@import url("https://fonts.googleapis.com/css?family=Karla:400,700|Lato:300,400,700|Quicksand:300,400,600&display=swap&subset=latin-ext");
+
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: "Karla", sans-serif;
+  font-size: 14px;
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+}
+
+button,
+a,
+input,
+select,
+textarea {
+  background: transparent;
+  font-family: inherit;
+  color: inherit;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+input::placeholder {
+  font-family: inherit;
+  color: inherit;
+}
+
+button:active,
+button:focus,
+input:active,
+input:focus,
+select:active,
+select:focus,
+textarea:active,
+textarea:focus {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}

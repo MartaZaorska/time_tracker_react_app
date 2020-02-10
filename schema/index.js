@@ -40,7 +40,6 @@ module.exports = buildSchema(`
 
   type RootMutation {
     createUser(email: String!, password: String!): AuthData!
-    removeUser(userId: ID!): Confirm
     createTimer(timerInput: TimerInput!): Timer
     updateTimer(timerId: ID!, timerInput: TimerInput!): Confirm
     removeTimer(timerId: ID!): Confirm

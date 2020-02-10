@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
+import Context from "./context/index";
 
 function App() {
+  const context = useContext(Context);
+
   return (
-    <div className="App">
-      <header className="App-header">app</header>
-    </div>
+    <section>
+      <p>app</p>
+    </section>
   );
 }
 

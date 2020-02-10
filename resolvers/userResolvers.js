@@ -36,15 +36,5 @@ module.exports = {
     } catch (err) {
       throw err;
     }
-  },
-  removeUser: async ({ userId }) => {
-    try {
-      await User.findByIdAndRemove(userId);
-      return {
-        success: true
-      };
-    } catch (err) {
-      throw err;
-    }
   }
 };
