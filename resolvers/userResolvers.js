@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 
 const jwtSign = (userId, email) => {
-  const token = jwt.sign({ userId, email }, "secretkey", { expiresIn: "1h" });
+  const token = jwt.sign({ userId, email }, "secretkey");
   return {
     token,
     userId,

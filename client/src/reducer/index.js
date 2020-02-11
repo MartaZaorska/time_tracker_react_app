@@ -1,7 +1,7 @@
 export const LOGOUT = "LOGOUT";
 export const LOGIN = "LOGIN";
-export const ADD_ERRORS = "ADD_ERRORS";
-export const CLEAR_ERRORS = "CLEAR_ERRORS";
+export const ADD_ERROR = "ADD_ERROR";
+export const CLEAR_ERROR = "CLEAR_ERROR";
 export const GET_TIMERS = "GET_TIMERS";
 export const ADD_TIMER = "ADD_TIMER";
 export const REMOVE_TIMER = "REMOVE_TIMER";
@@ -14,7 +14,7 @@ const updateTimerReducer = (state, timer) => {
   return {
     ...state,
     timers: updatedTimers,
-    errors: []
+    error: ""
   };
 };
 
@@ -23,43 +23,43 @@ export const defaultReducer = (state, action) => {
     case LOGIN:
       return {
         ...state,
-        errors: [],
+        error: "",
         user: { ...action.user }
       };
     case LOGOUT:
       return {
         ...state,
-        errors: [],
+        error: "",
         timers: [],
         user: { token: "", userId: "", email: "" }
       };
-    case ADD_ERRORS:
+    case ADD_ERROR:
       return {
         ...state,
-        errors: [...state.errors, ...action.errors]
+        error: action.error
       };
-    case CLEAR_ERRORS:
+    case CLEAR_ERROR:
       return {
         ...state,
-        errors: []
+        error: ""
       };
     case GET_TIMERS:
       return {
         ...state,
         timers: [...action.timers],
-        errors: []
+        error: ""
       };
     case ADD_TIMER:
       return {
         ...state,
         timers: [...state.timers, action.timer],
-        errors: []
+        error: ""
       };
     case REMOVE_TIMER:
       return {
         ...state,
         timers: state.timers.filter(timer => timer._id !== action.timerId),
-        errors: []
+        error: ""
       };
     case UPDATE_TIMER:
       return updateTimerReducer(state, action.timer);

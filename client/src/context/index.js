@@ -3,11 +3,12 @@ import {
   GET_TIMERS,
   LOGOUT,
   LOGIN,
-  ADD_ERRORS,
+  ADD_ERROR,
   ADD_TIMER,
   REMOVE_TIMER,
   UPDATE_TIMER,
-  defaultReducer
+  defaultReducer,
+  CLEAR_ERROR
 } from "../reducer";
 
 import { fetchData } from "../helper/index";
@@ -19,7 +20,7 @@ export const Provider = props => {
   const initialState = {
     timers: [],
     user: { token: "", userId: "", email: "" },
-    errors: []
+    error: ""
   };
 
   const [state, dispatch] = useReducer(defaultReducer, initialState, () => {
@@ -61,9 +62,7 @@ export const Provider = props => {
 
     fetchData(requestBody, "createUser")
       .then(data => dispatch({ type: LOGIN, user: data }))
-      .catch(error =>
-        dispatch({ type: ADD_ERRORS, errors: error.map(err => err.message) })
-      );
+      .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
   };
 
   const login = (email, password) => {
@@ -85,16 +84,14 @@ export const Provider = props => {
 
     fetchData(requestBody, "login")
       .then(data => dispatch({ type: LOGIN, user: data }))
-      .catch(error =>
-        dispatch({ type: ADD_ERRORS, errors: error.map(err => err.message) })
-      );
+      .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
   };
 
   const logout = () => dispatch({ type: LOGOUT });
 
   const getTimers = () => {
     if (state.user.token.length === 0) {
-      dispatch({ type: ADD_ERRORS, errors: ["Użytkownik niezalogowany"] });
+      dispatch({ type: ADD_ERROR, error: "Użytkownik niezalogowany" });
       return;
     }
 
@@ -114,14 +111,12 @@ export const Provider = props => {
 
     fetchData(requestBody, "timers", state.user.token)
       .then(data => dispatch({ type: GET_TIMERS, timers: data }))
-      .catch(error =>
-        dispatch({ type: ADD_ERRORS, errors: error.map(err => err.message) })
-      );
+      .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
   };
 
   const addTimer = (category, start, finish = 0, description = "") => {
     if (state.user.token.length === 0) {
-      dispatch({ type: ADD_ERRORS, errors: ["Użytkownik niezalogowany"] });
+      dispatch({ type: ADD_ERROR, error: "Użytkownik niezalogowany" });
       return;
     }
 
@@ -147,9 +142,7 @@ export const Provider = props => {
 
     fetchData(requestBody, "createTimer", state.user.token)
       .then(data => dispatch({ type: ADD_TIMER, timer: data }))
-      .catch(error =>
-        dispatch({ type: ADD_ERRORS, errors: error.map(err => err.message) })
-      );
+      .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
   };
 
   const updateTimer = (
@@ -160,7 +153,7 @@ export const Provider = props => {
     description = ""
   ) => {
     if (state.user.token.length === 0) {
-      dispatch({ type: ADD_ERRORS, errors: ["Użytkownik niezalogowany"] });
+      dispatch({ type: ADD_ERROR, error: "Użytkownik niezalogowany" });
       return;
     }
 
@@ -190,14 +183,12 @@ export const Provider = props => {
           });
         }
       })
-      .catch(error =>
-        dispatch({ type: ADD_ERRORS, errors: error.map(err => err.message) })
-      );
+      .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
   };
 
   const removeTimer = timerId => {
     if (state.user.token.length === 0) {
-      dispatch({ type: ADD_ERRORS, errors: ["Użytkownik niezalogowany"] });
+      dispatch({ type: ADD_ERROR, error: "Użytkownik niezalogowany" });
       return;
     }
 
@@ -218,10 +209,12 @@ export const Provider = props => {
       .then(data => {
         if (data.success) dispatch({ type: REMOVE_TIMER, timerId });
       })
-      .catch(error =>
-        dispatch({ type: ADD_ERRORS, errors: error.map(err => err.message) })
-      );
+      .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
   };
+
+  const addError = error => dispatch({ type: ADD_ERROR, error: error });
+
+  const clearError = () => dispatch({ type: CLEAR_ERROR });
 
   return (
     <Context.Provider
@@ -233,7 +226,9 @@ export const Provider = props => {
         removeTimer,
         logout,
         login,
-        register
+        register,
+        addError,
+        clearError
       }}
     >
       {props.children}
