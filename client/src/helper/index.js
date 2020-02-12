@@ -24,3 +24,10 @@ export const validateEmail = email => {
   const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   return re.test(email);
 };
+
+export const getTimeString = diff => {
+  const hours = +Math.floor(diff / 3600000);
+  const min = +Math.floor((diff % 3600000) / 60000);
+  const sec = +Math.floor((diff % 60000) / 1000);
+  return `${hours} godz. ${min} min. ${sec} sec.`;
+};

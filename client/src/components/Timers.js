@@ -1,6 +1,10 @@
 import React, { useContext, useEffect, useState } from "react";
 
 import Context from "../context/index";
+import NewTimerForm from "./NewTimerForm";
+import ActiveTimer from "./ActiveTimer";
+import TimerList from "./TimerList";
+import TimerStatistic from "./TimerStatistic";
 
 function Timers() {
   const [activeTimer, setActiveTimer] = useState({});
@@ -11,15 +15,34 @@ function Timers() {
     if (timerIndex >= 0) setActiveTimer({ ...context.timers[timerIndex] });
   }, [context.timers]);
 
-  if (Object.keys(activeTimer).length > 0) return <p>Jest aktywny timer</p>;
+  const updateTimer = (timerId, category, start, finish, description) => {
+    context.updateTimer(timerId, category, start, finish, description);
+    setActiveTimer({});
+  };
+
+  if (Object.keys(activeTimer).length > 0)
+    return (
+      <ActiveTimer
+        updateTimer={updateTimer}
+        removeTimer={context.removeTimer}
+        timer={activeTimer}
+        addError={context.addError}
+      />
+    );
 
   return (
     <React.Fragment>
-      <p>Komponent tworzący i aktywujący nowy timer</p>
+      <NewTimerForm addTimer={context.addTimer} addError={context.addError} />
       {context.timers.length === 0 ? (
         <p>Brak timerów</p>
       ) : (
-        <p>Lista utworzonych i zakończonych timerów</p>
+        <React.Fragment>
+          <TimerList
+            timers={context.timers}
+            removeTimer={context.removeTimer}
+          />
+          <TimerStatistic timers={context.timers} />
+        </React.Fragment>
       )}
     </React.Fragment>
   );
