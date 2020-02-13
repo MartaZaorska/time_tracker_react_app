@@ -1,10 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
+import { Doughnut, Line, Bar } from "react-chartjs-2";
 
-function TimerStatistic({ timers }) {
+import useFilterData from "../hooks/useFilterData";
+
+function TimerStatistic({ data, filter }) {
+  const chartData = useFilterData(data, filter);
+  const [chartType, setChartType] = useState("line");
+
+  if (filter === "") return null;
+
   return (
-    <div>
-      <p>TimerStatistic</p>
-    </div>
+    <section className="timer_statistic">
+      {+filter[0] ? (
+        <Doughnut data={chartData} />
+      ) : filter.startsWith("days") ? (
+        <React.Fragment>
+          <select
+            value={chartType}
+            onChange={e => setChartType(e.target.value)}
+          >
+            <option value="line">wykres liniowy</option>
+            <option value="bar">wykres słupkowy</option>
+          </select>
+          {chartType === "line" ? (
+            <Line data={chartData} />
+          ) : (
+            <Bar data={chartData} />
+          )}
+        </React.Fragment>
+      ) : null}
+    </section>
   );
 }
 

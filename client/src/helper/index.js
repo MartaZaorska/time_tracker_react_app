@@ -25,7 +25,9 @@ export const validateEmail = email => {
   return re.test(email);
 };
 
-export const getTimeString = diff => {
+export const getTimeString = (end, start) => {
+  //const diff = end === 0 ? new Date().getTime() - start : end - start;
+  const diff = end - start;
   const hours = +Math.floor(diff / 3600000);
   const min = +Math.floor((diff % 3600000) / 60000);
   const sec = +Math.floor((diff % 60000) / 1000);

@@ -3,8 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Context from "../context/index";
 import NewTimerForm from "./NewTimerForm";
 import ActiveTimer from "./ActiveTimer";
-import TimerList from "./TimerList";
-import TimerStatistic from "./TimerStatistic";
+import TimersContent from "./TimersContent";
 
 function Timers() {
   const [activeTimer, setActiveTimer] = useState({});
@@ -33,17 +32,7 @@ function Timers() {
   return (
     <React.Fragment>
       <NewTimerForm addTimer={context.addTimer} addError={context.addError} />
-      {context.timers.length === 0 ? (
-        <p>Brak timerów</p>
-      ) : (
-        <React.Fragment>
-          <TimerList
-            timers={context.timers}
-            removeTimer={context.removeTimer}
-          />
-          <TimerStatistic timers={context.timers} />
-        </React.Fragment>
-      )}
+      {context.timers.length === 0 ? <p>Brak timerów</p> : <TimersContent />}
     </React.Fragment>
   );
 }

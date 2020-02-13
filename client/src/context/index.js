@@ -175,14 +175,12 @@ export const Provider = props => {
     };
 
     fetchData(requestBody, "updateTimer", state.user.token)
-      .then(data => {
-        if (data.success) {
-          dispatch({
-            type: UPDATE_TIMER,
-            timer: { _id: timerId, category, start, finish, description }
-          });
-        }
-      })
+      .then(data =>
+        dispatch({
+          type: UPDATE_TIMER,
+          timer: { _id: timerId, category, start, finish, description }
+        })
+      )
       .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
   };
 
@@ -206,9 +204,7 @@ export const Provider = props => {
     };
 
     fetchData(requestBody, "removeTimer", state.user.token)
-      .then(data => {
-        if (data.success) dispatch({ type: REMOVE_TIMER, timerId });
-      })
+      .then(data => dispatch({ type: REMOVE_TIMER, timerId }))
       .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
   };
 

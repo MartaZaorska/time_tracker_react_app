@@ -12,7 +12,7 @@ function ActiveTimer({ updateTimer, removeTimer, timer, addError }) {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCount(getTimeString(new Date().getTime() - timer.start));
+      setCount(getTimeString(new Date().getTime(), timer.start));
     }, 1000);
 
     return () => {
