@@ -11,7 +11,7 @@ function TimerStatistic({ data, filter }) {
 
   return (
     <section className="timer_statistic">
-      {+filter[0] ? (
+      {filter === "date" ? (
         <Doughnut data={chartData} />
       ) : filter.startsWith("days") ? (
         <React.Fragment>

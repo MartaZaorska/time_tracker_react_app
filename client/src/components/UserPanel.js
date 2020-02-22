@@ -5,7 +5,7 @@ function UserPanel({ email, logout }) {
     <section className="user_panel">
       <span className="user_panel__email">{email}</span>
       <button className="user_panel__btn" onClick={logout}>
-        Wyloguj się
+        <i className="user_panel__icon fas fa-power-off"></i>
       </button>
     </section>
   );

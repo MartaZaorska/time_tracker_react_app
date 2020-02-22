@@ -4,10 +4,14 @@ import TimerList from "./TimerList";
 import TimerStatistic from "./TimerStatistic";
 import Context from "../context/index";
 
+import { getTimeList } from "../helper/index";
+
 function TimersContent() {
   const context = useContext(Context);
   const [filter, setFilter] = useState("");
   const [dates, setDates] = useState([]);
+  const [date, setDate] = useState("");
+  const [showInput, setShowInput] = useState(false);
   const [categories, setCategories] = useState([]);
   const [data, setData] = useState([]);
 
@@ -15,48 +19,58 @@ function TimersContent() {
     const resultDates = [];
     const resultCategories = [];
     context.timers.forEach(timer => {
-      resultDates.push(new Date(timer.start).toISOString().slice(0, 10));
+      resultDates.push(new Date(timer.start).getTime());
       resultCategories.push(timer.category);
     });
-    setDates([...new Set(resultDates)]);
+
+    setDates(getTimeList(resultDates));
     setCategories([...new Set(resultCategories)]);
   }, [context.timers]);
 
   useEffect(() => {
     if (filter === "") {
+      setShowInput(false);
       setData(context.timers);
-    } else if (+filter[0] || filter.startsWith("days")) {
+    } else if (filter === "date") {
+      setShowInput(true);
+    } else if (filter.startsWith("days")) {
+      setShowInput(false);
       const startDay =
-        filter === "days7"
+        filter === "days3"
+          ? new Date().getTime() - 259200000
+          : filter === "days7"
           ? new Date().getTime() - 604800000
-          : filter === "days14"
-          ? new Date().getTime() - 1209600000
-          : new Date(`${filter} 00:00`).getTime();
-      const endDay = filter.startsWith("days")
-        ? new Date().getTime()
-        : new Date(`${filter} 23:59`).getTime();
+          : new Date().getTime() - 1209600000;
+      setData(context.timers.filter(timer => timer.start >= startDay));
+    } else {
+      setShowInput(false);
+      setData(context.timers.filter(timer => timer.category === filter));
+    }
+  }, [filter, context.timers]);
+
+  useEffect(() => {
+    if (date.length !== 0) {
+      const startDay = new Date(`${date} 00:00`).getTime();
+      const endDay = startDay + 86400000;
       setData(
         context.timers.filter(
           timer => timer.start >= startDay && timer.start <= endDay
         )
       );
-    } else {
-      setData(context.timers.filter(timer => timer.category === filter));
     }
-  }, [filter, context.timers]);
+  }, [date, context.timers]);
 
   return (
     <section className="timers__content">
       <select value={filter} onChange={e => setFilter(e.target.value)}>
         <option value="">Filtruj</option>
         <optgroup label="według daty">
-          {dates.map(dateItem => (
-            <option value={dateItem} key={dateItem}>
-              {dateItem}
+          <option value="date">wybierz datę</option>
+          {dates.map(date => (
+            <option key={date.value} value={date.value}>
+              {date.text}
             </option>
           ))}
-          <option value="days7">ostatnie 7 dni</option>
-          <option value="days14">ostatnie 14 dni</option>
         </optgroup>
         <optgroup label="według kategorii">
           {categories.map(category => (
@@ -66,6 +80,13 @@ function TimersContent() {
           ))}
         </optgroup>
       </select>
+      {showInput ? (
+        <input
+          type="date"
+          value={date}
+          onChange={e => setDate(e.target.value)}
+        />
+      ) : null}
       <TimerList data={data} removeTimer={context.removeTimer} />
       <TimerStatistic data={data} filter={filter} />
     </section>

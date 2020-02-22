@@ -16,7 +16,7 @@ function Timers() {
 
   const updateTimer = (timerId, category, start, finish, description) => {
     context.updateTimer(timerId, category, start, finish, description);
-    setActiveTimer({});
+    if (finish > 0) setActiveTimer({});
   };
 
   if (Object.keys(activeTimer).length > 0)

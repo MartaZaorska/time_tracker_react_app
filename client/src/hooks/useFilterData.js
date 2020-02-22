@@ -1,27 +1,26 @@
 import { useEffect, useState } from "react";
-import { set } from "mongoose";
+
+const getPercentageValue = (value, total) => {
+  return parseInt((value * 100) / total);
+};
 
 const getDataForDay = data => {
   const datasets = [{ data: [] }];
   const labels = [];
-  const result = [];
+  const calculatedValues = {};
   let total = 0;
+
   data.forEach(item => {
-    const index = result.findIndex(
-      resultItem => resultItem.category === item.category
-    );
     const value = item.finish - item.start;
-    if (index < 0) {
-      result.push({ category: item.category, value });
-    } else {
-      result[index].value += value;
-    }
     total += value;
+    calculatedValues[item.category]
+      ? (calculatedValues[item.category] += value)
+      : (calculatedValues[item.category] = value);
   });
 
-  result.forEach(resultItem => {
-    labels.push(resultItem.category);
-    const value = parseInt((resultItem.value * 100) / total);
+  Object.entries(calculatedValues).forEach(item => {
+    labels.push(item[0]);
+    const value = getPercentageValue(item[1], total);
     datasets[0].data.push(value);
   });
 
@@ -31,73 +30,78 @@ const getDataForDay = data => {
   };
 };
 
+const getNamesOfDays = numOfDays => {
+  const result = [];
+  const now = new Date().getTime();
+  for (let i = 0; i < numOfDays; i++) {
+    result.unshift(new Date(now - 86400000 * i).toISOString().slice(0, 10));
+  }
+  return result;
+};
+
+const getCategoriesFromData = data => {
+  const allCategories = [];
+  data.forEach(item => {
+    allCategories.push(item.category);
+  });
+
+  return [...new Set(allCategories)];
+};
+
+const filterDataForDay = (day, data) => {
+  const startDay = new Date(`${day} 00:00`).getTime();
+  const endDay = startDay + 86400000;
+
+  return data.filter(item => item.start >= startDay && item.start < endDay);
+};
+
 const useFilterData = (data, filter) => {
   const [chartData, setChartData] = useState({});
 
   useEffect(() => {
     if (filter === "") return;
-    if (+filter[0]) {
-      const result = getDataForDay(data);
-      setChartData(result);
+    if (filter === "date") {
+      setChartData(getDataForDay(data));
     } else if (filter.startsWith("days")) {
-      const days = [];
-      const now = new Date().getTime();
-      const count = filter === "days7" ? 7 : 14;
-      for (let i = 0; i < count; i++) {
-        days.unshift(new Date(now - 86400000 * i).toISOString().slice(0, 10));
-      }
-
+      const numberOfDays = filter === "days3" ? 3 : filter === "days7" ? 7 : 14;
+      const labels = getNamesOfDays(numberOfDays);
+      const categories = getCategoriesFromData(data);
       const result = [];
-      days.forEach(day => {
-        const startDay = new Date(`${day} 00:00`).getTime();
-        const endDay = startDay + 86400000;
-        const resultData = [];
-        data.forEach(item => {
-          if (item.start >= startDay && item.start < endDay) {
-            resultData.push(item);
-          }
-        });
+      const datasets = [];
+
+      labels.forEach(label => {
+        const filteredData = filterDataForDay(label, data);
         result.push({
-          day,
-          data: getDataForDay(resultData)
+          label,
+          data: getDataForDay(filteredData)
         });
       });
 
-      const tmp = [];
-      data.forEach(item => {
-        tmp.push(item.category);
-      });
-
-      const categories = [...new Set(tmp)];
-
-      console.log(result);
-      const endData = { labels: days, datasets: [] };
       categories.forEach(category => {
         const categoryData = [];
-        days.forEach(dayItem => {
-          const indexDay = result.findIndex(el => el.day === dayItem);
-          if (result[indexDay].data.labels.length === 0) {
+
+        labels.forEach(label => {
+          const indexLabel = result.findIndex(item => item.label === label);
+          const categoryIndex = result[indexLabel].data.labels.indexOf(
+            category
+          );
+
+          if (categoryIndex < 0) {
             categoryData.push(0);
           } else {
-            const categoryIndex = result[indexDay].data.labels.indexOf(
-              category
+            categoryData.push(
+              result[indexLabel].data.datasets[0].data[categoryIndex]
             );
-            if (categoryIndex < 0) {
-              categoryData.push(0);
-            } else {
-              categoryData.push(
-                result[indexDay].data.datasets[0].data[categoryIndex]
-              );
-            }
           }
         });
-        endData.datasets.push({
+
+        datasets.push({
           label: category,
           data: categoryData
         });
       });
 
-      setChartData(endData);
+      setChartData({ labels, datasets });
     }
   }, [data, filter]);
 

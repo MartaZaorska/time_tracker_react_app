@@ -10,27 +10,26 @@ function App() {
 
   useEffect(() => {
     if (context.error.length > 0) {
-      const messageElement = document.querySelector(".message");
-      messageElement.textContent = context.error;
-      setTimeout(() => {
-        messageElement.textContent = "";
-        context.clearError();
-      }, 3000);
+      setTimeout(() => context.clearError(), 3000);
     }
   }, [context.error]);
 
   return (
-    <section className="container">
-      {context.user.token.length === 0 ? (
-        <UserAuthorization />
-      ) : (
-        <React.Fragment>
-          <UserPanel logout={context.logout} email={context.user.email} />
-          <Timers />
-        </React.Fragment>
+    <React.Fragment>
+      {context.error.length === 0 ? null : (
+        <span className="error_message">{context.error}</span>
       )}
-      <span className="message"></span>
-    </section>
+      <section className="container">
+        {context.user.token.length === 0 ? (
+          <UserAuthorization />
+        ) : (
+          <React.Fragment>
+            <UserPanel logout={context.logout} email={context.user.email} />
+            <Timers />
+          </React.Fragment>
+        )}
+      </section>
+    </React.Fragment>
   );
 }
 
