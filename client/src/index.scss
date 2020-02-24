@@ -8,6 +8,10 @@ $sm: "screen and (min-width: 576px)";
 $fontColor: #222;
 $color: rgb(88, 123, 146);
 
+$boxShadow: 0 0.5px 1.25px rgba(0, 0, 0, 0.05),
+  0px 1px 2.5px rgba(0, 0, 0, 0.05), 0px 2px 5px rgba(0, 0, 0, 0.1),
+  0px 4px 10px rgba(0, 0, 0, 0.15), 0px 8px 20px rgba(0, 0, 0, 0.2);
+
 * {
   margin: 0;
   padding: 0;
@@ -25,6 +29,20 @@ body {
   min-height: 100vh;
 }
 
+::-webkit-scrollbar {
+  background: transparent;
+  width: 15px;
+  &-thumb {
+    box-shadow: inset 0 0 15px 15px rgba(110, 110, 110, 0.4);
+    border: solid 5px transparent;
+    border-radius: 1.3em;
+  }
+  &-track {
+    box-shadow: inset 0 0 15px 15px transparent;
+    border: solid 5px transparent;
+  }
+}
+
 button,
 a,
 input,
@@ -35,6 +53,16 @@ textarea {
   color: inherit;
   outline: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+input[type="date"]::-webkit-clear-button,
+input[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+
+::-webkit-calendar-picker-indicator {
+  color: #fff;
+  background: transparent;
 }
 
 input::placeholder {
@@ -58,11 +86,23 @@ textarea:focus {
   width: 100%;
   height: auto;
   overflow: hidden;
+  padding: 0.5em 1em;
+
+  @media #{$lg} {
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 45px 85px calc(100% - 130px);
+    grid-template-columns: 65% 35%;
+  }
 }
 
 .text--light {
   color: lighten($fontColor, 15);
   font-weight: 300;
+}
+
+.text--color {
+  color: $color;
 }
 
 // ERROR MESSAGE
@@ -71,18 +111,17 @@ textarea:focus {
   z-index: 2;
   position: fixed;
   display: block;
-  top: 1em;
-  right: 1em;
+  bottom: 0em;
+  right: 0em;
+  margin: 1em;
   text-align: right;
-  background: $color;
+  background: rgb(190, 99, 103);
   padding: 0.6em;
   border-radius: 10px;
   color: #fff;
   font-weight: 700;
-  max-width: 230px;
-  @media #{$lg} {
-    font-size: 0.9em;
-  }
+  font-size: 0.9em;
+  box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.15);
 }
 
 // USER AUTHORIZATION SECTION
@@ -170,12 +209,19 @@ textarea:focus {
 
   @media #{$md} {
     justify-content: flex-end;
+    align-items: flex-start;
     padding: 0.7em 1em;
+  }
+
+  @media #{$lg} {
+    grid-area: 1/2/2/3;
+    padding: 0.2em 1em;
   }
 
   &__email {
     font-size: 0.9em;
     margin-right: 0.8em;
+    margin-top: 0.1em;
   }
 
   &__btn {
@@ -189,5 +235,205 @@ textarea:focus {
     @media #{$md} {
       font-size: 1.2em;
     }
+  }
+}
+
+// NEW TIMER FORM SECTION
+
+.new_timer {
+  display: flex;
+  font-size: 0.8em;
+
+  @media #{$md} {
+    justify-content: flex-start;
+  }
+
+  @media #{$lg} {
+    grid-area: 1/1/3/2;
+  }
+
+  &__form {
+    width: 100%;
+    padding: 1.2em 1.2em 0.8em 1.2em;
+    margin: 1em 0em;
+    border-radius: 0.7em;
+    color: #fff;
+    background-color: lighten($color, 10);
+    box-shadow: $boxShadow;
+
+    @media #{$md} {
+      width: auto;
+      min-width: 400px;
+    }
+
+    @media #{$lg} {
+      min-width: 500px;
+      margin: 1em 0.5em;
+    }
+  }
+
+  &__select {
+    border: 1px solid #fff;
+    padding: 0.5em 0.3em;
+    border-radius: 0.7em;
+    margin: 1.1em 0em;
+    option {
+      color: $fontColor;
+    }
+  }
+
+  &__btn {
+    font-size: 1.1em;
+    color: #efefef;
+    font-weight: 800;
+    margin-left: 1.8em;
+    transition: all 0.1s;
+    cursor: pointer;
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+// EMPTY TIMERS SECTION
+
+.empty_timers {
+  margin: 2em 1em 1em 1em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  @media #{$lg} {
+    grid-area: 3/1/4/3;
+  }
+
+  &__text {
+    font-size: 1.1em;
+  }
+
+  &__icon {
+    font-size: 1.7em;
+    color: lighten($fontColor, 25);
+    margin-right: 0.3em;
+  }
+}
+
+// TIMERS CONTENT SECTION
+
+.timers__content {
+  padding: 0.2em;
+  margin: 0.2em 0em;
+  @media #{$lg} {
+    grid-area: 2/2/3/3;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding: 0.3em 1em;
+  }
+}
+
+.timers__select {
+  border: 1px solid $color;
+  padding: 0.3em 0.5em;
+  border-radius: 0.7em;
+  margin-bottom: 0.2em;
+}
+
+.timers__input {
+  display: block;
+  background: lighten($color, 15);
+  color: #fff;
+  font-weight: 800;
+  border-radius: 0.7em;
+  padding: 0.3em 0.5em;
+  margin: 0.5em 0em 1em 0em;
+  @media #{$lg} {
+    padding: 1em;
+  }
+}
+
+//TIMER LIST SECTION
+
+.timer_list {
+  padding: 0.2em;
+  margin-top: 0.5em;
+
+  @media #{$lg} {
+    grid-area: 3/2/4/3;
+    margin: 0;
+    padding: 1em 1em 0.5em 1em;
+    margin-bottom: 0.5em;
+    overflow-y: scroll;
+  }
+}
+
+.timer_item {
+  padding: 0.5em;
+  margin-bottom: 1.1em;
+  border-radius: 0.7em;
+  background: darken(#fff, 4);
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.15);
+  transition: all 0.1s;
+  line-height: 1.5;
+
+  &:hover {
+    box-shadow: 0px 2px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  &__title {
+    text-transform: capitalize;
+  }
+
+  &__footer {
+    text-align: right;
+    padding: 0.1em;
+  }
+
+  &__btn {
+    padding: 0.2em 0.3em;
+    cursor: pointer;
+    transition: all 0.1s;
+    &:hover {
+      color: #000;
+      font-weight: 800;
+    }
+  }
+
+  .text--light {
+    font-size: 0.9em;
+    margin-right: 0.3em;
+  }
+
+  .text--color {
+    font-size: 0.95em;
+    font-weight: 800;
+  }
+}
+
+//TIMER STATISTIC SECTION
+
+.timer_statistic {
+  margin-bottom: 1em;
+  padding: 0.5em 0em;
+
+  @media #{$lg} {
+    margin-bottom: 0em;
+    margin-top: 1.5em;
+    grid-area: 3/1/4/2;
+    padding: 0.5em;
+    overflow: scroll;
+  }
+
+  @media #{$xl} {
+    margin-top: 0.2em;
+    padding: 0.1em 0.4em;
+  }
+
+  &__select {
+    border: 1px solid $color;
+    padding: 0.3em 0.5em;
+    border-radius: 0.7em;
+    margin-bottom: 0.5em;
   }
 }

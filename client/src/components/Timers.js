@@ -4,6 +4,7 @@ import Context from "../context/index";
 import NewTimerForm from "./NewTimerForm";
 import ActiveTimer from "./ActiveTimer";
 import TimersContent from "./TimersContent";
+import EmptyTimers from "./EmptyTimers";
 
 function Timers() {
   const [activeTimer, setActiveTimer] = useState({});
@@ -32,7 +33,7 @@ function Timers() {
   return (
     <React.Fragment>
       <NewTimerForm addTimer={context.addTimer} addError={context.addError} />
-      {context.timers.length === 0 ? <p>Brak timerów</p> : <TimersContent />}
+      {context.timers.length === 0 ? <EmptyTimers /> : <TimersContent />}
     </React.Fragment>
   );
 }

@@ -19,16 +19,14 @@ function App() {
       {context.error.length === 0 ? null : (
         <span className="error_message">{context.error}</span>
       )}
-      <section className="container">
-        {context.user.token.length === 0 ? (
-          <UserAuthorization />
-        ) : (
-          <React.Fragment>
-            <UserPanel logout={context.logout} email={context.user.email} />
-            <Timers />
-          </React.Fragment>
-        )}
-      </section>
+      {context.user.token.length === 0 ? (
+        <UserAuthorization />
+      ) : (
+        <section className="container">
+          <UserPanel logout={context.logout} email={context.user.email} />
+          <Timers />
+        </section>
+      )}
     </React.Fragment>
   );
 }

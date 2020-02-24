@@ -29,12 +29,13 @@ function TimersContent() {
 
   useEffect(() => {
     if (filter === "") {
-      setShowInput(false);
+      resetValue();
       setData(context.timers);
     } else if (filter === "date") {
+      setData([]);
       setShowInput(true);
     } else if (filter.startsWith("days")) {
-      setShowInput(false);
+      resetValue();
       const startDay =
         filter === "days3"
           ? new Date().getTime() - 259200000
@@ -43,7 +44,7 @@ function TimersContent() {
           : new Date().getTime() - 1209600000;
       setData(context.timers.filter(timer => timer.start >= startDay));
     } else {
-      setShowInput(false);
+      resetValue();
       setData(context.timers.filter(timer => timer.category === filter));
     }
   }, [filter, context.timers]);
@@ -60,36 +61,48 @@ function TimersContent() {
     }
   }, [date, context.timers]);
 
+  const resetValue = () => {
+    setShowInput(false);
+    setDate("");
+  };
+
   return (
-    <section className="timers__content">
-      <select value={filter} onChange={e => setFilter(e.target.value)}>
-        <option value="">Filtruj</option>
-        <optgroup label="według daty">
-          <option value="date">wybierz datę</option>
-          {dates.map(date => (
-            <option key={date.value} value={date.value}>
-              {date.text}
-            </option>
-          ))}
-        </optgroup>
-        <optgroup label="według kategorii">
-          {categories.map(category => (
-            <option value={category} key={category}>
-              {category}
-            </option>
-          ))}
-        </optgroup>
-      </select>
-      {showInput ? (
-        <input
-          type="date"
-          value={date}
-          onChange={e => setDate(e.target.value)}
-        />
-      ) : null}
-      <TimerList data={data} removeTimer={context.removeTimer} />
+    <React.Fragment>
+      <section className="timers__content">
+        <select
+          className="timers__select"
+          value={filter}
+          onChange={e => setFilter(e.target.value)}
+        >
+          <option value="">Filtruj</option>
+          <optgroup label="według daty">
+            <option value="date">wybierz datę</option>
+            {dates.map(date => (
+              <option key={date.value} value={date.value}>
+                {date.text}
+              </option>
+            ))}
+          </optgroup>
+          <optgroup label="według kategorii">
+            {categories.map(category => (
+              <option value={category} key={category}>
+                {category}
+              </option>
+            ))}
+          </optgroup>
+        </select>
+        {showInput ? (
+          <input
+            className="timers__input"
+            type="date"
+            value={date}
+            onChange={e => setDate(e.target.value)}
+          />
+        ) : null}
+      </section>
       <TimerStatistic data={data} filter={filter} />
-    </section>
+      <TimerList data={data} removeTimer={context.removeTimer} />
+    </React.Fragment>
   );
 }
 
