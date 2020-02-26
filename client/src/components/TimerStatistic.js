@@ -5,17 +5,11 @@ import { OPTIONS_CHART } from "../constants/index";
 import useFilterData from "../hooks/useFilterData";
 
 function TimerStatistic({ data, filter }) {
-  const [chartType, setChartType] = useState("line");
+  const [chartType, setChartType] = useState("bar");
   const [showChart, setShowChart] = useState(false);
   const chartData = useFilterData(data, filter);
 
   useEffect(() => {
-    checkConditions();
-
-    window.addEventListener("resize", checkConditions);
-  }, [data, filter]);
-
-  const checkConditions = () => {
     if (
       filter === "" ||
       filter === "date" ||
@@ -26,7 +20,7 @@ function TimerStatistic({ data, filter }) {
     } else {
       setShowChart(false);
     }
-  };
+  }, [data, filter]);
 
   if (!showChart || data.length === 0) return null;
 

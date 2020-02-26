@@ -23,19 +23,14 @@ export const fetchData = (requestBody, dataName, token = "") => {
 export const getTimeList = dates => {
   const timeList = [];
   const now = new Date().getTime();
-  if (
-    dates.findIndex(
-      item => item < now - 1209600000 && item > now - 604800000
-    ) >= 0
-  )
+  const sevenDays = now - 604800000;
+  const fourteenDays = now - 1209600000;
+  const threeDays = now - 259200000;
+  if (dates.findIndex(item => item > fourteenDays && item < sevenDays) >= 0)
     timeList.push({ value: "days14", text: "ostatnie 14 dni" });
-  if (
-    dates.findIndex(
-      item => item <= now - 604800000 && item > now - 259200000
-    ) >= 0
-  )
+  if (dates.findIndex(item => item >= sevenDays && item < threeDays) >= 0)
     timeList.push({ value: "days7", text: "ostatnie 7 dni" });
-  if (dates.findIndex(item => item >= now - 259200000) >= 0)
+  if (dates.findIndex(item => item >= threeDays) >= 0)
     timeList.push({ value: "days3", text: "ostatnie 3 dni" });
 
   return timeList;

@@ -24,7 +24,6 @@ function Timers() {
     return (
       <ActiveTimer
         updateTimer={updateTimer}
-        removeTimer={context.removeTimer}
         timer={activeTimer}
         addError={context.addError}
       />

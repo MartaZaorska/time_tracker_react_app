@@ -56,12 +56,14 @@ textarea {
 }
 
 input[type="date"]::-webkit-clear-button,
-input[type="date"]::-webkit-inner-spin-button {
+input[type="date"]::-webkit-inner-spin-button,
+input[type="time"]::-webkit-clear-button,
+input[type="time"]::-webkit-inner-spin-button {
   display: none;
 }
 
 ::-webkit-calendar-picker-indicator {
-  color: #fff;
+  color: inherit;
   background: transparent;
 }
 
@@ -85,7 +87,7 @@ textarea:focus {
 .container {
   width: 100%;
   height: auto;
-  overflow: hidden;
+  overflow-x: hidden;
   padding: 0.5em 1em;
 
   @media #{$lg} {
@@ -150,6 +152,16 @@ textarea:focus {
 
   @media #{$lg} {
     width: 50%;
+  }
+
+  &--test {
+    text-align: center;
+    font-size: 0.9em;
+    line-height: 1.5;
+
+    .text--color {
+      font-weight: 700;
+    }
   }
 
   &__form {
@@ -349,7 +361,7 @@ textarea:focus {
   padding: 0.3em 0.5em;
   margin: 0.5em 0em 1em 0em;
   @media #{$lg} {
-    padding: 1em;
+    padding: 0.4em;
   }
 }
 
@@ -435,5 +447,170 @@ textarea:focus {
     padding: 0.3em 0.5em;
     border-radius: 0.7em;
     margin-bottom: 0.5em;
+  }
+}
+
+// ACTIVE TIMER SECTION
+
+.active_timer {
+  padding: 0.2em;
+  font-size: 0.9em;
+
+  @media #{$lg} {
+    padding: 0.5em 1em;
+    grid-area: 2/1/4/3;
+  }
+
+  &__header {
+    margin: 0.5em 0em 1.5em 0em;
+    text-align: center;
+    @media #{$md} {
+      text-align: left;
+      margin-bottom: 2em;
+    }
+  }
+
+  &__text {
+    font-size: 1em;
+    margin-bottom: 0.4em;
+  }
+
+  &__count {
+    font-size: 1.5em;
+    color: $color;
+    @media #{$sm} {
+      font-size: 2.5em;
+    }
+
+    @media #{$lg} {
+      font-size: 3.2em;
+    }
+
+    @media #{$xl} {
+      font-size: 4em;
+    }
+  }
+
+  &__content {
+    padding: 0.5em 0.8em;
+    margin: 1em 0em 1.3em 0em;
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.25);
+    border-radius: 1em;
+    background: #ededed;
+
+    @media #{$sm} {
+      width: 60%;
+    }
+
+    @media #{$md} {
+      width: 45%;
+    }
+
+    @media #{$lg} {
+      width: 350px;
+    }
+
+    .text--color {
+      font-weight: 700;
+      text-transform: capitalize;
+    }
+  }
+
+  &__options {
+    margin: 0.7em 0em;
+    display: flex;
+    flex-direction: column;
+
+    @media #{$sm} {
+      width: 60%;
+    }
+
+    @media #{$md} {
+      width: 45%;
+    }
+
+    @media #{$lg} {
+      width: 350px;
+    }
+
+    .active_timer__btn {
+      display: inline-flex;
+      align-self: flex-end;
+      padding: 0.4em;
+      cursor: pointer;
+      @media #{$sm} {
+        align-self: flex-start;
+      }
+    }
+
+    .active_timer__text {
+      margin-bottom: 0.2em;
+      @media #{$sm} {
+        padding-left: 0.2em;
+      }
+    }
+  }
+
+  &__textarea {
+    border: 1px solid $color;
+    width: 100%;
+    min-height: 60px;
+    border-radius: 1em;
+    font-family: inherit;
+    padding: 0.4em;
+    resize: none;
+    margin: 0.4em 0em 0.5em 0em;
+  }
+
+  &--date {
+    @media #{$xl} {
+      text-align: right;
+    }
+
+    .active_timer__btn {
+      cursor: pointer;
+      margin: 0.3em 0em;
+      padding: 0.2em;
+      text-align: left;
+    }
+  }
+
+  &__input {
+    margin: 0.3em 0.5em 0.3em 0em;
+    border: 1px solid $color;
+    padding: 0.2em 0.4em;
+    border-radius: 1em;
+    &--time {
+      width: 30%;
+      @media #{$sm} {
+        width: auto;
+      }
+    }
+  }
+
+  &--finish {
+    margin: 1em 0em;
+    text-align: right;
+
+    .active_timer__btn {
+      padding: 0.4em 0.7em;
+      border-radius: 1em;
+      background: lighten($color, 10);
+      color: #fff;
+      font-weight: 700;
+    }
+  }
+}
+
+// COPYRIGHT
+
+.copyright {
+  font-size: 0.9em;
+  position: absolute;
+  bottom: 0.5em;
+  left: 0.5em;
+  &__link {
+    text-decoration: none;
+    color: $color;
   }
 }
