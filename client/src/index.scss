@@ -355,10 +355,10 @@ textarea:focus {
 
 .timers__input--date {
   display: block;
+  padding: 0.3em 0.5em;
   background: lighten($color, 15);
   color: #fff;
-  border-radius: 0.7em;
-  padding: 0.3em 0.5em;
+  border-radius: 0.6em;
   margin: 0.5em 0em 1em 0em;
 }
 
