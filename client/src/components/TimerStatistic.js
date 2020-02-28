@@ -20,7 +20,7 @@ function TimerStatistic({ data, filter }) {
     } else {
       setShowChart(false);
     }
-  }, [data, filter]);
+  }, [filter]);
 
   if (!showChart || data.length === 0) return null;
 

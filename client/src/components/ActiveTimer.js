@@ -4,11 +4,11 @@ import { getTimeString } from "../helper/index";
 
 function ActiveTimer({ updateTimer, timer, addError }) {
   const [description, setDescription] = useState("");
+  const [count, setCount] = useState("");
+  const [time, setTime] = useState("");
   const [date, setDate] = useState(
     new Date(timer.start).toISOString().slice(0, 10)
   );
-  const [time, setTime] = useState("");
-  const [count, setCount] = useState("");
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -20,28 +20,31 @@ function ActiveTimer({ updateTimer, timer, addError }) {
     };
   }, [timer.start]);
 
-  const addDescriptionHandler = () =>
-    updateTimer(timer._id, timer.category, timer.start, 0, description);
+  const addDescriptionHandler = () => {
+    if (description.length === 0) return;
+    updateTimer({ ...timer, description });
+  };
 
   const updateDescriptionHandler = () => {
     setDescription(timer.description);
-    updateTimer(timer._id, timer.category, timer.start, 0, "");
+    updateTimer({ ...timer, description: "" });
   };
 
-  const finishTimerHandler = now => {
+  const finishNowTimerHandler = () => {
     const desc = description || timer.description || "";
-    if (now) {
-      const finish = new Date().getTime();
-      updateTimer(timer._id, timer.category, timer.start, finish, desc);
-    } else {
-      if (time.length === 0 || date.length === 0) {
-        addError("Musisz ustawić date i czas zakończenia zadania");
-        return;
-      }
+    const finish = new Date().getTime();
+    updateTimer({ ...timer, finish, description: desc });
+  };
 
-      const finish = new Date(`${date} ${time}`).getTime();
-      updateTimer(timer._id, timer.category, timer.start, finish, desc);
+  const finishTimerHandler = () => {
+    if (time.length === 0 || date.length === 0) {
+      addError("Musisz ustawić date i czas zakończenia zadania");
+      return;
     }
+
+    const desc = description || timer.description || "";
+    const finish = new Date(`${date} ${time}`).getTime();
+    updateTimer({ ...timer, finish, description: desc });
   };
 
   return (
@@ -63,7 +66,7 @@ function ActiveTimer({ updateTimer, timer, addError }) {
           </span>
         </p>
       </section>
-      <section className="active_timer__options">
+      <section className="active_timer--description">
         {timer.description.length === 0 ? (
           <React.Fragment>
             <p className="active_timer__text">Opis (opcjonalnie)</p>
@@ -111,18 +114,12 @@ function ActiveTimer({ updateTimer, timer, addError }) {
           onChange={e => setTime(e.target.value)}
         />
         <br />
-        <button
-          className="active_timer__btn"
-          onClick={() => finishTimerHandler(false)}
-        >
+        <button className="active_timer__btn" onClick={finishTimerHandler}>
           Zakończ zadanie w ustawionym czasie
         </button>
       </section>
       <section className="active_timer--finish">
-        <button
-          onClick={() => finishTimerHandler(true)}
-          className="active_timer__btn"
-        >
+        <button onClick={finishNowTimerHandler} className="active_timer__btn">
           Zakończ zadanie teraz
         </button>
       </section>

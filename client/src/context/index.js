@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect } from "react";
 import {
+  defaultReducer,
   GET_TIMERS,
   LOGOUT,
   LOGIN,
@@ -7,7 +8,6 @@ import {
   ADD_TIMER,
   REMOVE_TIMER,
   UPDATE_TIMER,
-  defaultReducer,
   CLEAR_ERROR
 } from "../reducer";
 
@@ -114,7 +114,7 @@ export const Provider = props => {
       .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
   };
 
-  const addTimer = (category, start, finish = 0, description = "") => {
+  const addTimer = ({ category, start, finish = 0, description = "" }) => {
     if (state.user.token.length === 0) {
       dispatch({ type: ADD_ERROR, error: "Użytkownik niezalogowany" });
       return;
@@ -145,13 +145,13 @@ export const Provider = props => {
       .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
   };
 
-  const updateTimer = (
-    timerId,
+  const updateTimer = ({
+    _id,
     category,
     start,
     finish = 0,
     description = ""
-  ) => {
+  }) => {
     if (state.user.token.length === 0) {
       dispatch({ type: ADD_ERROR, error: "Użytkownik niezalogowany" });
       return;
@@ -166,7 +166,7 @@ export const Provider = props => {
         }
       `,
       variables: {
-        timerId,
+        timerId: _id,
         category,
         start,
         finish,
@@ -178,7 +178,7 @@ export const Provider = props => {
       .then(data =>
         dispatch({
           type: UPDATE_TIMER,
-          timer: { _id: timerId, category, start, finish, description }
+          timer: { _id, category, start, finish, description }
         })
       )
       .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
@@ -216,7 +216,6 @@ export const Provider = props => {
     <Context.Provider
       value={{
         ...state,
-        getTimers,
         addTimer,
         updateTimer,
         removeTimer,

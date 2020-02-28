@@ -4,7 +4,7 @@ import "./index.scss";
 import App from "./App";
 
 import { Provider } from "./context/index";
-//import * as serviceWorker from "./serviceWorker";
+import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <Provider>
@@ -13,4 +13,4 @@ ReactDOM.render(
   document.getElementById("root")
 );
 
-//serviceWorker.unregister();
+serviceWorker.register();

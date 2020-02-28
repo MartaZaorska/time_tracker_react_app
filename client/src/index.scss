@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Karla:400,700|Lato:300,400,700|Quicksand:300,400,600&display=swap&subset=latin-ext");
+@import url("https://fonts.googleapis.com/css?family=Quicksand:300,400,700&display=swap&subset=latin-ext");
 
 $xl: "screen and (min-width: 1200px)";
 $lg: "screen and (min-width: 992px)";
@@ -7,10 +7,6 @@ $sm: "screen and (min-width: 576px)";
 
 $fontColor: #222;
 $color: rgb(88, 123, 146);
-
-$boxShadow: 0 0.5px 1.25px rgba(0, 0, 0, 0.05),
-  0px 1px 2.5px rgba(0, 0, 0, 0.05), 0px 2px 5px rgba(0, 0, 0, 0.1),
-  0px 4px 10px rgba(0, 0, 0, 0.15), 0px 8px 20px rgba(0, 0, 0, 0.2);
 
 * {
   margin: 0;
@@ -53,6 +49,10 @@ textarea {
   color: inherit;
   outline: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  cursor: pointer;
 }
 
 input[type="date"]::-webkit-clear-button,
@@ -132,6 +132,8 @@ textarea:focus {
   display: none;
   @media #{$lg} {
     display: block;
+    //Photo by Plush Design Studio on Unsplash
+    background-image: url("https://images.unsplash.com/photo-1535086842-67d300b770c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1536&q=80");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -189,18 +191,17 @@ textarea:focus {
   }
 
   &__control {
-    flex-direction: column;
     display: flex;
+    flex-direction: column;
   }
 
   &__btn {
     padding: 0.5em;
     margin: 0.3em;
-    cursor: pointer;
 
     &--login {
       color: $color;
-      font-weight: 800;
+      font-weight: 700;
       font-size: 1.2em;
     }
   }
@@ -238,7 +239,6 @@ textarea:focus {
 
   &__btn {
     color: $color;
-    cursor: pointer;
     padding: 0.2em;
   }
 
@@ -271,7 +271,9 @@ textarea:focus {
     border-radius: 0.7em;
     color: #fff;
     background-color: lighten($color, 10);
-    box-shadow: $boxShadow;
+    box-shadow: 0 0.5px 1.25px rgba(0, 0, 0, 0.05),
+      0px 1px 2.5px rgba(0, 0, 0, 0.05), 0px 2px 5px rgba(0, 0, 0, 0.1),
+      0px 4px 10px rgba(0, 0, 0, 0.15), 0px 8px 20px rgba(0, 0, 0, 0.2);
 
     @media #{$md} {
       width: auto;
@@ -296,11 +298,10 @@ textarea:focus {
 
   &__btn {
     font-size: 1.1em;
-    color: #efefef;
-    font-weight: 800;
+    color: #dedede;
+    font-weight: 700;
     margin-left: 1.8em;
     transition: all 0.1s;
-    cursor: pointer;
     &:hover {
       color: #fff;
     }
@@ -352,17 +353,13 @@ textarea:focus {
   margin-bottom: 0.2em;
 }
 
-.timers__input {
+.timers__input--date {
   display: block;
   background: lighten($color, 15);
   color: #fff;
-  font-weight: 800;
   border-radius: 0.7em;
   padding: 0.3em 0.5em;
   margin: 0.5em 0em 1em 0em;
-  @media #{$lg} {
-    padding: 0.4em;
-  }
 }
 
 //TIMER LIST SECTION
@@ -404,11 +401,10 @@ textarea:focus {
 
   &__btn {
     padding: 0.2em 0.3em;
-    cursor: pointer;
     transition: all 0.1s;
     &:hover {
       color: #000;
-      font-weight: 800;
+      font-weight: 700;
     }
   }
 
@@ -419,7 +415,7 @@ textarea:focus {
 
   .text--color {
     font-size: 0.95em;
-    font-weight: 800;
+    font-weight: 700;
   }
 }
 
@@ -494,7 +490,7 @@ textarea:focus {
   &__content {
     padding: 0.5em 0.8em;
     margin: 1em 0em 1.3em 0em;
-    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 1px 10px rgba(0, 0, 0, 0.2);
     border-radius: 1em;
     background: #ededed;
 
@@ -516,7 +512,7 @@ textarea:focus {
     }
   }
 
-  &__options {
+  &--description {
     margin: 0.7em 0em;
     display: flex;
     flex-direction: column;
@@ -568,7 +564,6 @@ textarea:focus {
     }
 
     .active_timer__btn {
-      cursor: pointer;
       margin: 0.3em 0em;
       padding: 0.2em;
       text-align: left;
@@ -598,6 +593,11 @@ textarea:focus {
       background: lighten($color, 10);
       color: #fff;
       font-weight: 700;
+      transition: all 0.1s;
+      &:hover {
+        background: lighten($color, 5);
+        box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.15);
+      }
     }
   }
 }

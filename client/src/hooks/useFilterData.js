@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { BACKGROUND_COLOR } from "../constants/index";
+import { COLORS } from "../constants/index";
 
 const getPercentageValue = (value, total) => {
   return parseInt((value * 100) / total);
@@ -63,7 +63,7 @@ const useFilterData = (data, filter) => {
   useEffect(() => {
     if (filter === "" || filter === "date") {
       const result = getData(data);
-      result.datasets[0].backgroundColor = [...BACKGROUND_COLOR];
+      result.datasets[0].backgroundColor = [...COLORS];
       setChartData(result);
     } else if (filter.startsWith("days")) {
       const numberOfDays = filter === "days3" ? 3 : filter === "days7" ? 7 : 14;
@@ -101,7 +101,9 @@ const useFilterData = (data, filter) => {
         datasets.push({
           label: category,
           data: categoryData,
-          backgroundColor: BACKGROUND_COLOR[index]
+          backgroundColor: COLORS[index],
+          borderColor: COLORS[index],
+          fill: false
         });
       });
 

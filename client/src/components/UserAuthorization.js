@@ -7,14 +7,12 @@ function UserAuthorization() {
   const context = useContext(Context);
 
   useEffect(() => {
+    //Photos from the collection created by Joan Aldrich on Unsplash (collection id: 962362)
     if (document.body.getBoundingClientRect().width >= 992) {
       const bgElement = document.querySelector(".auth__background");
-      fetch(`https://source.unsplash.com/collection/962362`)
-        .then(res => (bgElement.style.backgroundImage = `url("${res.url}")`))
-        .catch(
-          () =>
-            (bgElement.style.backgroundImage = `url("https://images.unsplash.com/photo-1535086842-67d300b770c1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1536&q=80")`)
-        );
+      fetch(`https://source.unsplash.com/collection/962362`).then(
+        res => (bgElement.style.backgroundImage = `url("${res.url}")`)
+      );
     }
   }, []);
 

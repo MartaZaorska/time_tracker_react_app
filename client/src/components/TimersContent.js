@@ -4,26 +4,27 @@ import TimerList from "./TimerList";
 import TimerStatistic from "./TimerStatistic";
 import Context from "../context/index";
 
-import { getTimeList } from "../helper/index";
+import { getTimeSelectList } from "../helper/index";
 
 function TimersContent() {
-  const context = useContext(Context);
   const [filter, setFilter] = useState("");
-  const [dates, setDates] = useState([]);
+  const [times, setTimes] = useState([]);
   const [date, setDate] = useState("");
   const [showInput, setShowInput] = useState(false);
   const [categories, setCategories] = useState([]);
   const [data, setData] = useState([]);
 
+  const context = useContext(Context);
+
   useEffect(() => {
-    const resultDates = [];
+    const resultTimes = [];
     const resultCategories = [];
     context.timers.forEach(timer => {
-      resultDates.push(new Date(timer.start).getTime());
+      resultTimes.push(new Date(timer.start).getTime());
       resultCategories.push(timer.category);
     });
 
-    setDates(getTimeList(resultDates));
+    setTimes(getTimeSelectList(resultTimes));
     setCategories([...new Set(resultCategories)]);
   }, [context.timers]);
 
@@ -77,9 +78,9 @@ function TimersContent() {
           <option value="">Filtruj</option>
           <optgroup label="według daty">
             <option value="date">wybierz datę</option>
-            {dates.map(date => (
-              <option key={date.value} value={date.value}>
-                {date.text}
+            {times.map(time => (
+              <option key={time.value} value={time.value}>
+                {time.text}
               </option>
             ))}
           </optgroup>
@@ -93,7 +94,7 @@ function TimersContent() {
         </select>
         {showInput ? (
           <input
-            className="timers__input"
+            className="timers__input--date"
             type="date"
             value={date}
             onChange={e => setDate(e.target.value)}

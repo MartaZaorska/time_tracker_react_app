@@ -12,7 +12,7 @@ function NewTimerForm({ addTimer, addError }) {
       return;
     }
 
-    addTimer(category, new Date().getTime());
+    addTimer({ category, start: new Date().getTime() });
   };
 
   return (
