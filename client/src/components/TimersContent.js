@@ -75,8 +75,8 @@ function TimersContent() {
           value={filter}
           onChange={e => setFilter(e.target.value)}
         >
-          <option value="">Filtruj</option>
-          <optgroup label="według daty">
+          <option value="">Wszystkie</option>
+          <optgroup label="Filtruj wg daty">
             <option value="date">wybierz datę</option>
             {times.map(time => (
               <option key={time.value} value={time.value}>
@@ -84,7 +84,7 @@ function TimersContent() {
               </option>
             ))}
           </optgroup>
-          <optgroup label="według kategorii">
+          <optgroup label="Filtruj wg kategorii">
             {categories.map(category => (
               <option value={category} key={category}>
                 {category}

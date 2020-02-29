@@ -42,55 +42,62 @@ function UserAuthorization() {
   return (
     <React.Fragment>
       <section className="auth">
-        <form className="auth__form" noValidate>
-          <input
-            type="email"
-            id="email"
-            className="auth__input"
-            placeholder="E-mail"
-          />
-          <input
-            type="password"
-            id="password"
-            className="auth__input"
-            placeholder="Hasło"
-          />
-          <p className="text--light auth--test">
-            Możesz wypróbować aplikację logując się za pomocą
-            <br /> e-mail: <span className="text--color">test@test.com</span>,
-            hasło: <span className="text--color">test</span>.
-          </p>
-          <section className="auth__control">
-            <button
-              type="submit"
-              className="auth__btn auth__btn--login"
-              onClick={e => submitHandler(e, "login")}
-            >
-              Zaloguj się
-            </button>
-            <p className="auth__text text--light">lub</p>
-            <button
-              type="submit"
-              className="auth__btn"
-              onClick={e => submitHandler(e, "register")}
-            >
-              Załóż konto
-            </button>
-          </section>
-        </form>
+        {context.isLoading ? (
+          <section className="loader"></section>
+        ) : (
+          <React.Fragment>
+            <form className="auth__form" noValidate>
+              <input
+                type="email"
+                id="email"
+                className="auth__input"
+                placeholder="E-mail"
+              />
+              <input
+                type="password"
+                id="password"
+                className="auth__input"
+                placeholder="Hasło"
+              />
+              <p className="text--light auth--test">
+                Możesz wypróbować aplikację logując się za pomocą
+                <br /> e-mail:{" "}
+                <span className="text--color">test@test.com</span>, hasło:{" "}
+                <span className="text--color">test</span>.
+              </p>
+              <section className="auth__control">
+                <button
+                  type="submit"
+                  className="auth__btn auth__btn--login"
+                  onClick={e => submitHandler(e, "login")}
+                >
+                  Zaloguj się
+                </button>
+                <p className="auth__text text--light">lub</p>
+                <button
+                  type="submit"
+                  className="auth__btn"
+                  onClick={e => submitHandler(e, "register")}
+                >
+                  Załóż konto
+                </button>
+              </section>
+            </form>
+            <p className="copyright">
+              &copy; Time Tracker App created by{" "}
+              <a
+                href="https://martazaorska.github.io/portfolio/"
+                rel="noopener noreferrer"
+                target="_blank"
+                className="copyright__link"
+              >
+                Marta Zaorska
+              </a>
+            </p>
+          </React.Fragment>
+        )}
       </section>
       <section className="auth__background"></section>
-      <p className="copyright">
-        &copy; Time Tracker App created by{" "}
-        <a
-          href="https://martazaorska.github.io/portfolio/"
-          rel="noopener noreferrer"
-          target="_blank"
-          className="copyright__link"
-        >
-          Marta Zaorska
-        </a>
-      </p>
     </React.Fragment>
   );
 }

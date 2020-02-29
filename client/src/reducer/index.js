@@ -6,6 +6,7 @@ export const GET_TIMERS = "GET_TIMERS";
 export const ADD_TIMER = "ADD_TIMER";
 export const REMOVE_TIMER = "REMOVE_TIMER";
 export const UPDATE_TIMER = "UPDATE_TIMER";
+export const LOADING = "LOADING";
 
 const updateTimerReducer = (state, timer) => {
   const timerIndex = state.timers.findIndex(item => item._id === timer._id);
@@ -13,6 +14,7 @@ const updateTimerReducer = (state, timer) => {
   updatedTimers[timerIndex] = { ...timer };
   return {
     ...state,
+    isLoading: false,
     timers: updatedTimers,
     error: ""
   };
@@ -20,15 +22,22 @@ const updateTimerReducer = (state, timer) => {
 
 export const defaultReducer = (state, action) => {
   switch (action.type) {
+    case LOADING:
+      return {
+        ...state,
+        isLoading: true
+      };
     case LOGIN:
       return {
         ...state,
+        isLoading: false,
         error: "",
         user: { ...action.user }
       };
     case LOGOUT:
       return {
         ...state,
+        isLoading: false,
         error: "",
         timers: [],
         user: { token: "", userId: "", email: "" }
@@ -36,28 +45,33 @@ export const defaultReducer = (state, action) => {
     case ADD_ERROR:
       return {
         ...state,
+        isLoading: false,
         error: action.error
       };
     case CLEAR_ERROR:
       return {
         ...state,
+        isLoading: false,
         error: ""
       };
     case GET_TIMERS:
       return {
         ...state,
+        isLoading: false,
         timers: [...action.timers],
         error: ""
       };
     case ADD_TIMER:
       return {
         ...state,
+        isLoading: false,
         timers: [...state.timers, action.timer],
         error: ""
       };
     case REMOVE_TIMER:
       return {
         ...state,
+        isLoading: false,
         timers: state.timers.filter(timer => timer._id !== action.timerId),
         error: ""
       };

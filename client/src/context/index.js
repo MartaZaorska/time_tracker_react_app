@@ -8,10 +8,9 @@ import {
   ADD_TIMER,
   REMOVE_TIMER,
   UPDATE_TIMER,
-  CLEAR_ERROR
+  CLEAR_ERROR,
+  LOADING
 } from "../reducer";
-
-import { fetchData } from "../helper/index";
 
 const Context = React.createContext();
 export default Context;
@@ -20,7 +19,8 @@ export const Provider = props => {
   const initialState = {
     timers: [],
     user: { token: "", userId: "", email: "" },
-    error: ""
+    error: "",
+    isLoading: false
   };
 
   const [state, dispatch] = useReducer(defaultReducer, initialState, () => {
@@ -43,6 +43,35 @@ export const Provider = props => {
     }
   }, [state.user]);
 
+  const fetchData = (requestBody, dataName, token = "") => {
+    dispatch({ type: LOADING });
+    return new Promise((resolve, reject) => {
+      fetch("http://localhost:4000/graphql", {
+        method: "POST",
+        body: JSON.stringify(requestBody),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        }
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.errors && data.errors.length > 0) {
+            reject(data.errors);
+          } else if (data.data[dataName]) {
+            resolve(data.data[dataName]);
+          }
+        })
+        .catch(error => reject(error));
+    });
+  };
+
+  const errorHandler = error => {
+    if (error[0] && error[0].message) {
+      dispatch({ type: ADD_ERROR, error: error[0].message });
+    }
+  };
+
   const register = (email, password) => {
     const requestBody = {
       query: `
@@ -62,7 +91,7 @@ export const Provider = props => {
 
     fetchData(requestBody, "createUser")
       .then(data => dispatch({ type: LOGIN, user: data }))
-      .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
+      .catch(errorHandler);
   };
 
   const login = (email, password) => {
@@ -84,7 +113,7 @@ export const Provider = props => {
 
     fetchData(requestBody, "login")
       .then(data => dispatch({ type: LOGIN, user: data }))
-      .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
+      .catch(errorHandler);
   };
 
   const logout = () => dispatch({ type: LOGOUT });
@@ -111,7 +140,7 @@ export const Provider = props => {
 
     fetchData(requestBody, "timers", state.user.token)
       .then(data => dispatch({ type: GET_TIMERS, timers: data }))
-      .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
+      .catch(errorHandler);
   };
 
   const addTimer = ({ category, start, finish = 0, description = "" }) => {
@@ -142,7 +171,7 @@ export const Provider = props => {
 
     fetchData(requestBody, "createTimer", state.user.token)
       .then(data => dispatch({ type: ADD_TIMER, timer: data }))
-      .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
+      .catch(errorHandler);
   };
 
   const updateTimer = ({
@@ -181,7 +210,7 @@ export const Provider = props => {
           timer: { _id, category, start, finish, description }
         })
       )
-      .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
+      .catch(errorHandler);
   };
 
   const removeTimer = timerId => {
@@ -205,7 +234,7 @@ export const Provider = props => {
 
     fetchData(requestBody, "removeTimer", state.user.token)
       .then(data => dispatch({ type: REMOVE_TIMER, timerId }))
-      .catch(error => dispatch({ type: ADD_ERROR, error: error[0].message }));
+      .catch(errorHandler);
   };
 
   const addError = error => dispatch({ type: ADD_ERROR, error: error });

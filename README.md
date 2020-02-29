@@ -17,14 +17,13 @@ In the application, the user must first log in / register (to see the applicatio
 You can create, view and delete timers. For a new timer the user selects a category. The user can also add a description.
 There are two options for ending the timer: immediately or select the date and time (for example, if the user has forgotten to do it at the right time). The timer list can be filtered by date and category. Users can analyze their activity on charts that represent the percentage of categories for the selected day, the last 3 days, the last week or the last two weeks.
 
-PWA application - manifest.json file and serviceWorker API.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 Photos from the collection created by Joan Aldrich on Unsplash (collection id: 962362)
 
 ## Demo
 
-See online my project:
+See online my project: http://time-tracker-app-martazaorska.herokuapp.com/
 
 ## Technologies
 

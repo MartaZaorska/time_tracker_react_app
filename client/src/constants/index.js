@@ -25,21 +25,3 @@ export const COLORS = [
   "rgba(218, 180, 145, 0.5)",
   "rgba(218, 226, 208, 0.5)"
 ];
-
-export const OPTIONS_CHART = {
-  tooltips: {
-    callbacks: {
-      label: (tooltipItem, data) => {
-        if (data.datasets.length === 1) {
-          return `${data.labels[tooltipItem.index]}: ${
-            data.datasets[0].data[tooltipItem.index]
-          }%`;
-        } else {
-          return `${data.datasets[tooltipItem.datasetIndex].label}: ${
-            data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index]
-          }%`;
-        }
-      }
-    }
-  }
-};
